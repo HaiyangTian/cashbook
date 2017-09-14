@@ -43,42 +43,50 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 View viewDialog =LayoutInflater.from(MainActivity.this).inflate(R.layout.cost_et,null);
-                EditText title = viewDialog.findViewById(R.id.et_cost_title);
-                EditText money = viewDialog.findViewById(R.id.et_cost_money);
-                DatePicker date = viewDialog.findViewById(R.id.et_cost_date);
+                initCash();
+
+                final CashAdapter adapter = new CashAdapter(MainActivity.this,R.layout.cash_item,cashBeanList);
+
+                ListView listView = (ListView)findViewById(R.id.cash_list);
+
+                listView.setAdapter(adapter);
+                final EditText title = viewDialog.findViewById(R.id.et_cost_title);
+                final EditText money = viewDialog.findViewById(R.id.et_cost_money);
+                final DatePicker date = viewDialog.findViewById(R.id.et_cost_date);
                 builder.setView(viewDialog);
+                builder.setTitle("new cost");
                 builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        CashBean cashBean = new CashBean();
+                        cashBean.CashTitle = title.getText().toString();
+                        cashBean.CashMoney = money.getText().toString();
+                        cashBean.CashDate = date.getYear() + "-" + (date.getMonth() + 1) + "-" + date.getDayOfMonth();
+                        mDataBaseHelper.insertDataBaseCost(cashBean);
+                        cashBeanList.add(cashBean);
+                        adapter.notifyDataSetChanged();
                     }
 
                 });
-                builder.setPositiveButton("cancel",null);
+                builder.setNegativeButton("cancel",null);
                 builder.create().show();
             }
         });
 
-        initCash();
 
-        CashAdapter adapter = new CashAdapter(MainActivity.this,R.layout.cash_item,cashBeanList);
-
-        ListView listView = (ListView)findViewById(R.id.cash_list);
-
-        listView.setAdapter(adapter);
 
 
     }
     private void initCash(){
-        mDataBaseHelper.deleteAllData();
-          for (int i=0;i<6;i++){
+        //mDataBaseHelper.deleteAllData();
+          /*for (int i=0;i<6;i++){
               CashBean test = new CashBean();
               test.CashTitle = i + "mock";
               test.CashDate = "11-24";
               test.CashMoney = "21.3";
               mDataBaseHelper.insertDataBaseCost(test);
               //cashBeanList.add(test);
-          }
+          }*/
         Cursor cursor = mDataBaseHelper.getDateBaseCost();
         if (cursor!=null){
             while(cursor.moveToNext()){

@@ -13,6 +13,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DataBaseHelper extends SQLiteOpenHelper{
 
 
+    private static final String COST_TITLE = "cost_title";
+    private static final String COST_DATE = "cost_date";
+    private static final String COST_MONEY = "cost_money";
+    private static final String SUN_COST = "sun_cost";
+
     public DataBaseHelper(Context context){
         super(context,"cashbook",null,1);
     }
@@ -28,21 +33,21 @@ public class DataBaseHelper extends SQLiteOpenHelper{
     public void insertDataBaseCost(CashBean cb){
         SQLiteDatabase database = getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put("cost_title",cb.CashTitle);
-        cv.put("cost_date",cb.CashDate);
-        cv.put("cost_money",cb.CashMoney);
-        database.insert("sun_cost",null,cv);
+        cv.put(COST_TITLE,cb.CashTitle);
+        cv.put(COST_DATE,cb.CashDate);
+        cv.put(COST_MONEY,cb.CashMoney);
+        database.insert(SUN_COST,null,cv);
         
     }
 
     public Cursor getDateBaseCost(){
         SQLiteDatabase database = getWritableDatabase();
-        return database.query("sun_cost",null,null,null,null,null,"cost_date "+"ASC");
+        return database.query(SUN_COST,null,null,null,null,null,COST_DATE +" ASC");
     }
 
     public void deleteAllData(){
         SQLiteDatabase database = getWritableDatabase();
-        database.delete("sun_cost",null,null);
+        database.delete(SUN_COST,null,null);
     }
 
     @Override
