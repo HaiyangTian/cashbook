@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/cash_title"
-        android:layout_width="200dp"
+        android:layout_width="120dp"
         android:layout_height="80dp"
         android:layout_marginLeft="10dp"
         android:layout_alignParentLeft="true"
@@ -14,7 +14,7 @@
         android:singleLine="true"
         android:ellipsize="marquee"
         android:text="title"
-        android:textSize="35sp"
+        android:textSize="30sp"
         android:layout_marginTop="10dp"/>
     <TextView
         android:id="@+id/cash_date"
